@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>{{titulo}}</title>
+</head>
+<body>
+	<div id='body'>
+
+		{% block body %}
+
+			{{titulo}}
+
+			<div id='cabecera'>
+				{% block cabecera %} 
+					<header>
+						<nav>
+							<a href="/">Inicio</a>|
+  							<a href="/contacto">Contacto</a>|
+  							<a href="/inmuebles">Inmuebles</a>|
+  							<a href="/noticias">Noticias</a>
+						</nav>
+					</header>
+				{% endblock %}
+			</div> 
+
+			<div id='cuerpo'>
+				{% block cuerpo %}
+					<main>
+						Cuerpo: {{titulo}}
+					</main>
+				{% endblock %}
+			</div>
+			
+			<div id='pie'>
+				{% block pie %}
+					<footer>
+						Pie: {{titulo}}
+					</footer>		
+				{% endblock %}
+			</div> 
+
+		{% endblock %}
+		
+	</div>
+</body></html>

@@ -1,0 +1,18 @@
+{% extends 'djEj1/basenoticias.html' %}
+
+{% block cuerpo %}
+
+	{{ block.super }}
+	
+	<div>
+		<h2>{{ noticia.categoria.nombre }}</h2>
+		<h1>{{ noticia.titulo }}</h1>
+   		<p>{{ noticia.texto }}</p>
+   		
+   		{% if nota %}
+   			<p>nota: {{ nota }}</p>
+   		{% endif %}
+   		
+	</div>
+
+{% endblock %}

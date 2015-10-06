@@ -1,0 +1,42 @@
+{% extends 'djEj1/sidebar.html' %}
+
+{% block sidebar %}
+
+	{{ block.super }}
+	
+	{% block basenoticias %}
+
+	<div id='filtro_noticias'>
+	
+		{% block filtro_noticias %}
+			
+			<h5>Filtro:</h5>
+
+			<nav>
+		
+				<a href='/noticias'>Todas</a>
+
+			{% for categoria in categorias %}
+	    		<a href = '/noticias/c{{categoria.id}}'> | {{ categoria.nombre }}</a>
+			{% endfor %}
+
+			</nav>
+		{% endblock %}
+	
+	</div>
+
+
+	<div id='buscador_noticias'>
+		
+		<form method='GET' action='/buscanoticias'>
+		
+			<input type='text' name='busqueda'>
+			<input type='submit' value='Buscar'>
+		
+		</form>
+		
+	</div>
+
+	{% endblock %}
+
+{% endblock %}

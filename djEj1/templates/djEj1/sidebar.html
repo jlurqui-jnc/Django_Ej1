@@ -1,0 +1,17 @@
+{% extends 'djEj1/base.html' %}
+
+{% block body %}
+
+	{{ block.super }}	
+	
+	<div id='sidebar'>
+	
+		{% block sidebar %}
+			<aside>
+				Lateral: {{titulo}}
+			</aside>
+		{% endblock %}
+	
+	</div>
+	
+{% endblock %}	
