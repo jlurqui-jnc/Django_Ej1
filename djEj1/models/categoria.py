@@ -17,3 +17,6 @@ class Categoria(models.Model):
     @classmethod
     def create(cls, nombre):
         return Categoria(nombre=nombre)
+    
+    def __str__(self):
+        return self.nombre

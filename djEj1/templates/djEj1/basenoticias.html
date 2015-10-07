@@ -14,11 +14,11 @@
 
 			<nav>
 		
-				<a href='/noticias'>Todas</a>
+				<a href='{% url "noticias" %}'>Todas</a>
 
-			{% for categoria in categorias %}
-	    		<a href = '/noticias/c{{categoria.id}}'> | {{ categoria.nombre }}</a>
-			{% endfor %}
+				{% for categoria in categorias %}
+	    		<a href = '{% url "noticiascat" categoria.id %}'> | {{ categoria.nombre }}</a>
+				{% endfor %}
 
 			</nav>
 		{% endblock %}
@@ -28,7 +28,7 @@
 
 	<div id='buscador_noticias'>
 		
-		<form method='GET' action='/buscanoticias'>
+		<form method='GET' action='{% url "buscanoticias" %}'>
 		
 			<input type='text' name='busqueda'>
 			<input type='submit' value='Buscar'>

@@ -15,7 +15,7 @@ class Noticia(models.Model):
     classdocs
     '''
     fecha = models.DateField(default=timezone.now)
-    titulo = models.TextField(max_length=30, default='')
+    titulo = models.TextField(max_length=128, default='')
     texto = models.TextField(max_length=2048, null=True)
     categoria = models.ForeignKey(Categoria, default=None)
     

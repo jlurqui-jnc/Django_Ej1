@@ -1,5 +1,6 @@
 eclipse.preferences.version=1
 encoding//djEj1/models/categoria.py=utf-8
 encoding//djEj1/models/noticia.py=utf-8
+encoding//djEj1/templates/djEj1/base.html=UTF-8
 encoding//djEj1/templates/djEj1/noticias.html=UTF-8
 encoding//djEj1/views.py=utf-8

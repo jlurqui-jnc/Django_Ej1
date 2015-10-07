@@ -15,10 +15,10 @@
 				{% block cabecera %} 
 					<header>
 						<nav>
-							<a href="/">Inicio</a>|
-  							<a href="/contacto">Contacto</a>|
-  							<a href="/inmuebles">Inmuebles</a>|
-  							<a href="/noticias">Noticias</a>
+							<a href='{% url "home" %}'>Inicio</a>|
+  							<a href='{% url "contacto" %}'>Contacto</a>|
+  							<a href='{% url "inmuebles" %}'>Inmuebles</a>|
+  							<a href='{% url "noticias" %}'>Noticias</a>
 						</nav>
 					</header>
 				{% endblock %}

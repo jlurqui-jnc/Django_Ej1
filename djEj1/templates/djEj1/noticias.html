@@ -4,11 +4,15 @@
 
 	{{ block.super }}
 	
+	<div id='creanoticia'>
+	  	<a href='{% url "creanoticia" %}'>Crea tu noticia</a>
+	</div>
+	
 	<div id='noticias'>
 		<ul>
-		{% for noticia in noticias %}
+		{% for noticia in noticia_list %}
 	    	<li>
-	    		<a href = '/noticia/{{noticia.id}}'>{{ noticia.titulo }}</a>
+	    		<a href = '{% url "noticia" noticia.id %}'>{{ noticia.titulo }}</a>
 	    	</li>
 		{% endfor %}
 		</ul>
@@ -16,23 +20,26 @@
 
 	{% block paginacion %}
 	
-	<div class="paginacion">
-    	<span class="enlaces_parciales">
-        	{% if noticias.has_previous %}
-            	<a href="?pagina={{ noticias.previous_page_number }}">anterior</a>
-        	{% endif %}
+		{% if is_paginated %}
+		<div class="paginacion">
+	    	<span class="enlaces_parciales">
+    	    	{% if page_obj.has_previous %}
+            		<a href="?page={{ page_obj.previous_page_number }}">anterior</a>
+        		{% endif %}
 
-        	<span class="current">
-	            Página {{ noticias.number }} de {{ noticias.paginator.num_pages }}
-        	</span>
+        		<span class="current">
+		            Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}
+        		</span>
 
-        	{% if noticias.has_next %}
-            	<a href="?pagina={{ noticias.next_page_number }}">siguiente</a>
-        	{% endif %}
-    	</span>
-	</div>
+        		{% if page_obj.has_next %}
+	            	<a href="?page={{ page_obj.next_page_number }}">siguiente</a>
+        		{% endif %}
+    		</span>
+		</div>
 	
-	<br>
+		<br>
+
+		{% endif %}
 
 	{% endblock %}
 

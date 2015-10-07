@@ -16,25 +16,23 @@ Including another URLconf
 from django.conf.urls import include, url
 from django.contrib import admin
 
-from .views import home, buscanoticias, contacto, inmuebles, noticia, noticias
-
-from .views import ContactoView, HomeView, InmueblesView
+from .views import ContactoView, HomeView, InmueblesView, NoticiaView, NoticiasView, CreaNoticiasView
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
-#    url('^$', home, name='home'),
-#    url('^home$', home, name='home'),
     url('^$', HomeView.as_view(), name='home'),
-    url('^home$', HomeView.as_view(), name='home'),
+    url('^home$', HomeView.as_view(), name='homehome'),
     url('^contacto$', ContactoView.as_view(), name='contacto'),
     url('^inmuebles$', InmueblesView.as_view(), name='inmuebles'),
-    url('^buscanoticias$', buscanoticias, name='buscanoticias'),
-    url('^noticias$', noticias, name='noticias'),
-    url('^noticias/c(?P<idcategoria>\d+)$', noticias, name='noticias'),
-    url('^noticia/(?P<idnoticia>\d+)$', noticia, name='noticia'),
-    url('^noticia/(?P<idnoticia>\d+)/(?P<nota>[0-9A-Za-z])$', noticia, name='noticia'),
+    
+    #Noticias
+    url('^buscanoticias$', NoticiasView.as_view(), name='buscanoticias'),
+    url('^creanoticia$', CreaNoticiasView.as_view(), name='creanoticia'),
+    url('^noticias$', NoticiasView.as_view(), name='noticias'),
+    url('^noticias/c(?P<idcategoria>\d+)$', NoticiasView.as_view(), name='noticiascat'),
+    url('^noticia/(?P<pk>\d+)$', NoticiaView.as_view(), name='noticia'),
+    url('^noticia/(?P<pk>\d+)/(?P<nota>[0-9A-Za-z])$', NoticiaView.as_view(), name='noticianota'),
 ]
-
 
 #The () view is overridden by handler400:
 handler404 = 'mysite.views.my_custom_page_not_found_view'
