@@ -14,7 +14,7 @@ class ComentarioForm(forms.ModelForm):
      
     class Meta:
         model = Comentario
-        fields = ('texto', 'usuario', 'noticia')
+        fields = ('texto', 'usuario', 'noticia', 'fecha')
         
         widgets = {
             'noticia': HiddenInput(),
