@@ -12,11 +12,11 @@ class Categoria(models.Model):
     '''
     classdocs
     '''
-    nombre = models.TextField(max_length=50, default='')
+    nombre = models.CharField(max_length=50, default='')
     
     @classmethod
     def create(cls, nombre):
         return Categoria(nombre=nombre)
     
     def __str__(self):
-        return self.nombre
+        return self.nombre    

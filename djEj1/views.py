@@ -6,21 +6,24 @@ Created on 15 de sept. de 2015
 @author: jlurqui
 '''
 
-from django.shortcuts import render_to_response
+#from django.shortcuts import render_to_response
+
+from datetime import date
+
+from django.core.urlresolvers import reverse
 from django.db.models import Q
-from django.views.generic import TemplateView, ListView, DetailView, CreateView
+from django.http.response import HttpResponseRedirect
+from django.views.generic import View, TemplateView, ListView, DetailView, CreateView
+#from django.utils import timezone
 
 from djEj1.models.categoria import Categoria
 from djEj1.models.noticia import Noticia
+from djEj1.forms.comentarioForm import ComentarioForm
 
-def categorias():
-    return (categoria for categoria in Categoria.objects.all() if Noticia.objects.filter(categoria=categoria.id).exists())
-     
-def noticia(request, idnoticia, nota=None):
-    return render_to_response('djEj1/noticia.html', 
-                               {'noticia': Noticia.objects.get(id=idnoticia),
-                                'nota': nota,
-                                'categorias' : categorias()})
+class CategoriasMixin:
+    def categorias(self):
+        return (categoria for categoria in Categoria.objects.all() if Noticia.objects.filter(categoria=categoria.id).exists())
+    
 
 class TemplateViewBasico(TemplateView):
     template_name = 'djEj1/base.html'
@@ -35,17 +38,21 @@ class TemplateViewBasico(TemplateView):
         
         return context
 
+
 class ContactoView(TemplateViewBasico):
     template_name = 'djEj1/sidebar.html'
     titulo = 'Contacto'
     
+
 class HomeView(TemplateViewBasico):
     titulo = 'Inicio'
         
+
 class InmueblesView(TemplateViewBasico):
     titulo = 'Inmuebles'
 
-class NoticiaView(DetailView):
+
+class NoticiaView(CategoriasMixin, DetailView):
     model = Noticia
     template_name = 'djEj1/noticia.html'
  
@@ -54,12 +61,13 @@ class NoticiaView(DetailView):
         context = super(NoticiaView, self).get_context_data(**kwargs)
 
         # Añadimos al contexto los elementos necesarios
-        context['categorias'] = categorias()
-        context['nota'] = self.kwargs.get('nota', None)
+        context['categorias'] = self.categorias()
+        context['comentarioForm'] = ComentarioForm(initial={'fecha': date.today(), 'noticia': Noticia.objects.get(pk=self.object.id)})
         
         return context
      
-class NoticiasView(ListView):
+
+class NoticiasView(CategoriasMixin, ListView):
     #context_object_name = "noticias_list"
     model = Noticia
     ordering  = 'titulo' 
@@ -71,7 +79,7 @@ class NoticiasView(ListView):
         context = super(NoticiasView, self).get_context_data(**kwargs)
 
         # Añadimos al contexto los elementos necesarios
-        context['categorias'] = categorias()
+        context['categorias'] = self.categorias()
         
         return context
 
@@ -89,15 +97,38 @@ class NoticiasView(ListView):
         else:    
             return lista_noticias
         
-class CreaNoticiasView(CreateView):
+
+class CreaNoticiaView(CategoriasMixin, CreateView):
     model = Noticia
     fields = ['fecha', 'categoria', 'titulo', 'texto']
     success_url = 'noticias'
     template_name = 'djEj1/creanoticia.html'
     
-#     def get_context_data(self, **kwargs):
-#         # Conseguimos el contexto desde la implementación de la clase base
-#         context = super(CreaNoticiasView, self).get_context_data(**kwargs)
-# 
-#         # Añadimos al contexto los elementos necesarios
-#         context['categorias'] = categorias()    
+            
+    def get_context_data(self, **kwargs):
+        # Conseguimos el contexto desde la implementación de la clase base
+        context = super(CreaNoticiaView, self).get_context_data(**kwargs)
+
+        # Añadimos al contexto los elementos necesarios
+        context['categorias'] = self.categorias()
+        
+        return context
+    
+class CreaComentarioView(CategoriasMixin, View):
+    
+    def post(self, request, *args, **kwargs):
+
+        idnoticia = self.kwargs.get('idnoticia', None)
+        
+        if idnoticia != None:
+                    
+            form = ComentarioForm(request.POST)
+            
+            if form.is_valid():
+                form.save()
+            else:
+                print(form)
+                
+            return HttpResponseRedirect(reverse('noticia', args={idnoticia}))
+
+        return HttpResponseRedirect(reverse('noticias'))

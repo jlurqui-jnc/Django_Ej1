@@ -2,12 +2,6 @@
 
 {% block cuerpo %}
 
-	{{ block.super }}
-	
-	<div id='creanoticia'>
-	  	<a href='{% url "creanoticia" %}'>Crea tu noticia</a>
-	</div>
-	
 	<div id='noticias'>
 		<ul>
 		{% for noticia in noticia_list %}
@@ -42,5 +36,15 @@
 		{% endif %}
 
 	{% endblock %}
+
+{% endblock %}
+
+{% block basenoticias %}
+
+	<div id='creanoticia'>
+		<p><a href='{% url "creanoticia" %}'>Crea tu noticia</a></p>
+	</div>
+	
+	{{ block.super }}	
 
 {% endblock %}

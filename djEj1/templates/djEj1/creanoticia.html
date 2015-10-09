@@ -1,0 +1,17 @@
+{% extends 'djEj1/basenoticias.html' %}
+
+{% block cuerpo %}
+
+	{{ block.super }}
+	
+	<form action='' method="POST">
+		
+		{% csrf_token %}
+    	
+    	{{ form.as_p }}
+    
+    	<input type="submit" value="Crear noticia" />
+    
+	</form>
+
+{% endblock %}
