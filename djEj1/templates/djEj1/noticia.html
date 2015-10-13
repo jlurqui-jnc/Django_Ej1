@@ -14,25 +14,23 @@
    		
 		<div id='comentarios'>
 			<ul>
-			
-			{% for comentario in noticia.comentario_set.all %}
+				{% for comentario in noticia.comentario_set.all %}
 	    		<li>
 	    			<p>{{ comentario.texto }}</p>
 	    		</li>
-			{% endfor %}
-			
+				{% endfor %}
 			</ul>
-			
 		</div>
 
 
 		<div id='altacomentarios'>
 
-			<form action='{% url "creacomentario" noticia.id %}' method='POST'>
-		
+			<!-- form action='{% url "creacomentario" noticia.id %}' method='POST'>-->
+			<form action='' method='POST'>
+
 				{% csrf_token %}
-    	
-    			{{ comentarioForm.as_p }}
+
+    			{{ form.as_p }}
     
     			<input type='submit' value='Enviar comentario' />
     

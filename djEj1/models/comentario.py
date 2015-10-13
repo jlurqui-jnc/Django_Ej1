@@ -15,7 +15,7 @@ class Comentario(models.Model):
     '''
     classdocs
     '''
-    fecha = models.DateField(default=timezone.now())
+    fecha = models.DateField(default=timezone.now)
     texto = models.TextField(max_length=2048, null=True)
     noticia = models.ForeignKey(Noticia, default=None)
     usuario = models.ForeignKey(Usuario, default=None)

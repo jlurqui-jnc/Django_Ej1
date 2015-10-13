@@ -16,7 +16,7 @@ Including another URLconf
 from django.conf.urls import include, url
 from django.contrib import admin
 
-from .views import ContactoView, HomeView, InmueblesView, NoticiaView, NoticiasView, CreaNoticiaView, CreaComentarioView
+from .views import ContactoView, HomeView, InmueblesView, NoticiaView, NoticiasView, CreaNoticiaView, CreaComentarioView, CreaComentarioCreateView
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
@@ -31,7 +31,8 @@ urlpatterns = [
     url('^creanoticia$', CreaNoticiaView.as_view(), name='creanoticia'),
     url('^noticias$', NoticiasView.as_view(), name='noticias'),
     url('^noticias/c(?P<idcategoria>\d+)$', NoticiasView.as_view(), name='noticiascat'),
-    url('^noticia/(?P<pk>\d+)$', NoticiaView.as_view(), name='noticia'),
+    #url('^noticia/(?P<pk>\d+)$', NoticiaView.as_view(), name='noticia'),
+    url('^noticia/(?P<pk>\d+)$', CreaComentarioCreateView.as_view(), name='noticia'),    
 ]
 
 #The () view is overridden by handler400:

@@ -1,6 +1,7 @@
 eclipse.preferences.version=1
 encoding//djEj1/admin.py=utf-8
 encoding//djEj1/forms/comentarioForm.py=utf-8
+encoding//djEj1/mixins.py=utf-8
 encoding//djEj1/models/categoria.py=utf-8
 encoding//djEj1/models/comentario.py=utf-8
 encoding//djEj1/models/noticia.py=utf-8

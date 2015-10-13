@@ -12,16 +12,22 @@ from datetime import date
 
 from django.core.urlresolvers import reverse
 from django.db.models import Q
+from django.forms.widgets import HiddenInput
 from django.http.response import HttpResponseRedirect
+from django.shortcuts import render
 from django.views.generic import View, TemplateView, ListView, DetailView, CreateView
-#from django.utils import timezone
 
 from djEj1.models.categoria import Categoria
+from djEj1.models.comentario import Comentario
 from djEj1.models.noticia import Noticia
 from djEj1.forms.comentarioForm import ComentarioForm
+from djEj1.mixins import ModelFormWidgetMixin
+from django.contrib.messages.api import success
 
 class CategoriasMixin:
-    def categorias(self):
+    
+    @classmethod
+    def categorias(cls):
         return (categoria for categoria in Categoria.objects.all() if Noticia.objects.filter(categoria=categoria.id).exists())
     
 
@@ -62,7 +68,7 @@ class NoticiaView(CategoriasMixin, DetailView):
 
         # Añadimos al contexto los elementos necesarios
         context['categorias'] = self.categorias()
-        context['comentarioForm'] = ComentarioForm(initial={'fecha': date.today(), 'noticia': Noticia.objects.get(pk=self.object.id)})
+        context['form'] = ComentarioForm(initial={'fecha': date.today(), 'noticia': Noticia.objects.get(pk=self.object.id)})
         
         return context
      
@@ -120,15 +126,52 @@ class CreaComentarioView(CategoriasMixin, View):
 
         idnoticia = self.kwargs.get('idnoticia', None)
         
-        if idnoticia != None:
+        if not idnoticia is None:
                     
             form = ComentarioForm(request.POST)
             
             if form.is_valid():
                 form.save()
+                return HttpResponseRedirect(reverse('noticia', args={idnoticia}))
             else:
-                print(form)
-                
-            return HttpResponseRedirect(reverse('noticia', args={idnoticia}))
+                return render(request, 'djEj1/noticia.html', {'noticia': Noticia.objects.get(pk=idnoticia), 'comentarioForm': form, 'categorias': CategoriasMixin.categorias()})
+
 
         return HttpResponseRedirect(reverse('noticias'))
+    
+class CreaComentarioCreateView(ModelFormWidgetMixin, CategoriasMixin, CreateView):
+    
+    model = Comentario
+    fields = ['fecha', 'texto', 'noticia', 'usuario']
+    template_name = 'djEj1/noticia.html'
+    success_url = ''
+    widgets = {
+        'noticia': HiddenInput(),
+        'fecha': HiddenInput(),  
+    }
+    
+    def get_context_data(self, **kwargs):
+        
+        idnoticia = self.kwargs.get('pk', None)
+        
+        # Conseguimos el contexto desde la implementación de la clase base
+        context = super(CreaComentarioCreateView, self).get_context_data(**kwargs)
+
+        # Añadimos al contexto los elementos necesarios
+        context['categorias'] = self.categorias()
+        context['noticia'] = Noticia.objects.get(pk=idnoticia)
+        
+        return context
+
+    def get_initial(self):
+
+        super(CreaComentarioCreateView, self).get_initial()
+        self.initial = {'fecha' : date.today(), 'noticia' : Noticia.objects.get(pk=self.kwargs.get('pk', None))}
+
+        return self.initial
+
+    def form_valid(self, form):
+        
+        form.save()
+        
+        return HttpResponseRedirect(reverse('noticia', args={form.cleaned_data['noticia'].id}))
