@@ -6,19 +6,19 @@ Created on 7 de oct. de 2015
 @author: jlurqui
 '''
 
+from django.contrib.auth.models import User 
 from django.db import models
-from django.utils import timezone
 
 class Usuario(models.Model):
     '''
     classdocs
     '''
-    fecha = models.DateField(default=timezone.now)
-    nombre = models.CharField(max_length=32, default='')
+    user = models.OneToOneField(User, default=None)
+    observaciones = models.TextField(max_length=1024, default='')
     
     @classmethod
-    def create(cls, usuario, fecha):
-        return Usuario(usuario=usuario, fecha=fecha)
+    def create(cls, observaciones):
+        return Usuario(observaciones=observaciones)
     
     def __str__(self):
-        return self.nombre
+        return self.observaciones[0,31]

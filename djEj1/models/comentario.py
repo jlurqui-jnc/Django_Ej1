@@ -6,10 +6,12 @@ Created on 7 de oct. de 2015
 @author: jlurqui
 '''
 
+from django.contrib.auth.models import User  
 from django.db import models
 from django.utils import timezone
+
 from .noticia import Noticia
-from .usuario import Usuario
+#from .usuario import Usuario
 
 class Comentario(models.Model):
     '''
@@ -17,8 +19,8 @@ class Comentario(models.Model):
     '''
     fecha = models.DateField(default=timezone.now)
     texto = models.TextField(max_length=2048, null=True)
-    noticia = models.ForeignKey(Noticia, default=None)
-    usuario = models.ForeignKey(Usuario, default=None)
+    noticia = models.ForeignKey(Noticia, default=None, related_name='comentarios')
+    usuario = models.ForeignKey(User, default=None, related_name='comentarios')
     
     @classmethod
     def create(cls, fecha, texto, noticia, usuario):

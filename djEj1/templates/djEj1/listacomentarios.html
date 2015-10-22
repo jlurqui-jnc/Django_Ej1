@@ -1,0 +1,11 @@
+<h5>Comentarios:</h5>
+   		
+<div id='comentarios'>
+	<ul id='listacomentarios'>
+		{% for comentario in comentarios %}
+   		<li>
+   			<p>{{ comentario.texto }}</p>
+   		</li>
+		{% endfor %}
+	</ul>
+</div>

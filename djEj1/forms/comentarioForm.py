@@ -19,4 +19,5 @@ class ComentarioForm(forms.ModelForm):
         widgets = {
             'noticia': HiddenInput(),
             'fecha': HiddenInput(),            
+            'usuario': HiddenInput(),            
         }
